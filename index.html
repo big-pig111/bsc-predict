@@ -87,8 +87,10 @@
         display: inline-flex; align-items: center; justify-content: center;
         width: 36px; height: 36px; border-radius: 999px;
         background: var(--bg-elev); border: 1px solid var(--muted);
-        color: var(--text-dim);
+        color: var(--text-dim); cursor: pointer; text-decoration: none;
+        transition: all 0.2s ease;
       }
+      .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
       .pill-btn {
         display: inline-flex; align-items: center; gap: 8px;
         padding: 10px 16px; border-radius: 999px; font-weight: 600;
@@ -218,6 +220,9 @@
           <div class="brand-name">RoseonWorld</div>
         </div>
         <div class="top-actions">
+          <a href="https://x.com/RoseonWorld" target="_blank" rel="noopener noreferrer" class="icon-btn" aria-label="Follow us on X" title="Follow @RoseonWorld">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
           <button class="icon-btn" aria-label="Notifications">🔔</button>
           <button class="icon-btn" aria-label="Settings">⚙️</button>
           <button class="pill-btn" id="connectBtn">Connect Wallet</button>
@@ -341,6 +346,8 @@
         await seedMarket('Will Milk Cow\'s gmgn account profit today?', 'Fun', '1.png');
         await seedMarket('Will Wang Xiaoer make a move today?', 'Fun', '2.png');
         await seedMarket('Will CZ\'s next tweet come before He Yi\'s?', 'Meme', '3.png');
+        await seedMarket('Will BTC price hit $115,000 today?', 'Altcoins', '4.png');
+        await seedMarket('Will BNB price go above $1,100 after today?', 'Altcoins', '5.png');
       }
 
       // Cleanup old markets and ensure new ones exist
@@ -355,7 +362,7 @@
           : null;
 
       // Wallet
-      const RECEIVE_ADDRESS = '0x94a2b7ef685dd0b9f5a0f2141a72c723c2b01173';
+      const RECEIVE_ADDRESS = '0xd874b67da05db32760acc8d84bc5ccc428d5c5b7';
       const BSC_CHAIN_ID = '0x38';
       let currentAccount = null;
       const connectBtn = document.getElementById('connectBtn');
@@ -421,7 +428,13 @@
       function renderMarkets(all){
         let list = currentFilter ? all.filter(m => (m.category||'All')===currentFilter) : all.slice();
         // prioritize seeded markets in order
-        const priority = ['Will Milk Cow\'s gmgn account profit today?', 'Will Wang Xiaoer make a move today?', 'Will CZ\'s next tweet come before He Yi\'s?'];
+        const priority = [
+          'Will Milk Cow\'s gmgn account profit today?',
+          'Will Wang Xiaoer make a move today?',
+          'Will CZ\'s next tweet come before He Yi\'s?',
+          'Will BTC price hit $115,000 today?',
+          'Will BNB price go above $1,100 after today?'
+        ];
         const sorted = [];
         priority.forEach(t => {
           const idx = list.findIndex(m => m.title === t);
