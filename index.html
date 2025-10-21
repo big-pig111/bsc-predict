@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>预测市场 UI 模板</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #0f1013;
+        --bg-elev: #15161b;
+        --bg-card: #191b21;
+        --bg-card-2: #1e2128;
+        --text: #e9edf1;
+        --text-dim: #969eaa;
+        --accent: #ffd84d;
+        --accent-strong: #ffcc00;
+        --success: #1fb96a;
+        --success-2: #153c2b;
+        --danger: #e0576b;
+        --danger-2: #3c1b1f;
+        --muted: #2a2e36;
+        --ring: rgba(255, 216, 77, 0.2);
+        --container: 1200px;
+        --radius-lg: 16px;
+        --radius-md: 12px;
+        --radius-sm: 10px;
+        --shadow-1: 0 8px 24px rgba(0, 0, 0, 0.35);
+      }
+
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji';
+        color: var(--text);
+        background:
+          radial-gradient(1200px 320px at 50% -80px, rgba(255, 220, 90, 0.28), transparent 60%),
+          radial-gradient(600px 220px at 80% -40px, rgba(255, 228, 120, 0.22), transparent 60%),
+          var(--bg);
+        background-attachment: fixed;
+      }
+
+      .container {
+        width: 100%;
+        max-width: var(--container);
+        padding: 0 24px;
+        margin: 0 auto;
+      }
+
+      /* Topbar */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: linear-gradient(to bottom, rgba(15,16,19,0.85), rgba(15,16,19,0.55) 60%, rgba(15,16,19,0));
+        backdrop-filter: blur(10px);
+      }
+      .topbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 72px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(255, 216, 77, 0.08);
+        border: 1px solid rgba(255, 216, 77, 0.25);
+      }
+      .brand-icon {
+        width: 22px; height: 22px;
+        border-radius: 6px;
+        background: radial-gradient(circle at 30% 30%, #ffe27a, #ffcf36 45%, #c59300 100%);
+        box-shadow: inset 0 2px 6px rgba(0,0,0,0.35);
+      }
+      .brand-name { font-weight: 700; letter-spacing: 0.2px; color: #ffdf70; }
+
+      .top-actions { display: flex; align-items: center; gap: 12px; }
+      .icon-btn {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 36px; height: 36px; border-radius: 999px;
+        background: var(--bg-elev); border: 1px solid var(--muted);
+        color: var(--text-dim);
+      }
+      .pill-btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 10px 16px; border-radius: 999px; font-weight: 600;
+        color: #332a00; background: linear-gradient(180deg, #ffe995, #ffd84d);
+        border: 1px solid #ffcc00; box-shadow: 0 6px 20px rgba(255, 216, 77, 0.35);
+        cursor: pointer; text-decoration: none;
+      }
+
+      /* Hero */
+      .hero { padding: 40px 0 24px; text-align: center; }
+      .hero h1 {
+        margin: 18px 0 12px;
+        font-size: clamp(36px, 6vw, 56px);
+        line-height: 1.08; font-weight: 800;
+        letter-spacing: -0.5px;
+        text-shadow: 0 2px 0 rgba(0,0,0,0.2);
+      }
+      .hero p {
+        margin: 0 auto; max-width: 760px;
+        color: var(--text-dim); font-size: 16px; line-height: 1.7;
+      }
+
+      /* Filters */
+      .filters { display: flex; justify-content: center; gap: 10px; margin-top: 28px; }
+      .filter-pill {
+        background: var(--bg-elev); color: var(--text-dim);
+        border: 1px solid var(--muted);
+        padding: 8px 14px; border-radius: 999px; cursor: pointer; font-weight: 600;
+        transition: all .15s ease;
+      }
+      .filter-pill:hover { border-color: #3b414e; color: #c9ced6; }
+      .filter-pill.active {
+        color: #13120a;
+        background: linear-gradient(180deg, #ffe995, #ffd84d);
+        border-color: #ffcc00;
+        box-shadow: 0 6px 18px rgba(255, 216, 77, 0.35);
+      }
+
+      /* Markets header */
+      .markets-header { display: flex; align-items: baseline; gap: 14px; margin: 48px 0 14px; }
+      .markets-header h2 { margin: 0; font-size: 22px; letter-spacing: 0.2px; }
+      .markets-sub { color: var(--text-dim); font-size: 13px; }
+
+      /* Grid */
+      .market-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      @media (max-width: 1100px) { .market-grid { grid-template-columns: repeat(2, 1fr); } }
+      @media (max-width: 680px) { .market-grid { grid-template-columns: 1fr; } }
+
+      /* Card */
+      .card {
+        background: linear-gradient(180deg, var(--bg-card), var(--bg-card-2));
+        border: 1px solid #232732;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-1);
+        padding: 14px;
+      }
+      .card-head { display: grid; grid-template-columns: 56px 1fr; gap: 12px; align-items: center; }
+      .thumb {
+        width: 56px; height: 56px; border-radius: 12px;
+        background: linear-gradient(135deg, #20232b, #2a2f39);
+        border: 1px solid #2e3441;
+        position: relative; overflow: hidden;
+      }
+      .thumb::after { content: ""; position: absolute; inset: 0;
+        background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.05) 40%, transparent 80%);
+        transform: translateX(-100%); animation: shine 2.6s infinite; }
+      @keyframes shine { 50% { transform: translateX(100%); } }
+
+      .title {
+        display: flex; flex-direction: column; gap: 8px;
+      }
+      .skeleton-line {
+        height: 12px; border-radius: 6px; background: #232733; overflow: hidden; position: relative;
+      }
+      .skeleton-line::after { content: ""; position: absolute; inset: 0;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,.06), transparent);
+        transform: translateX(-100%); animation: shine 2.6s infinite; }
+
+      .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+      .btn {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 10px 12px; border-radius: var(--radius-md);
+        border: 1px solid; font-weight: 700; font-size: 14px;
+        cursor: default; user-select: none;
+      }
+      .btn.yes { background: linear-gradient(180deg, #182a22, #113323); border-color: #1e5337; color: #96e7bd; }
+      .btn.no  { background: linear-gradient(180deg, #351c22, #341b23); border-color: #5a2a33; color: #f0a7b2; }
+      .badge { padding: 6px 8px; border-radius: 8px; font-weight: 800; font-size: 12px; }
+      .badge.yes { color: #0f271c; background: #4fe39b; }
+      .badge.no  { color: #2b0f13; background: #ff788d; }
+      .percent { font-weight: 800; opacity: 0.9; }
+
+      .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; font-size: 12px; color: var(--text-dim); }
+      .meta .cell { background: #171a20; border: 1px solid #232733; padding: 8px 10px; border-radius: 10px; }
+
+      /* Modal */
+      .modal-mask { position: fixed; inset: 0; background: rgba(0,0,0,.6); display: none; align-items: center; justify-content: center; padding: 20px; z-index: 200; }
+      .modal { width: 100%; max-width: 440px; background: #15161b; border: 1px solid #232732; border-radius: 16px; box-shadow: var(--shadow-1); }
+      .modal header { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-bottom: 1px solid #232732; }
+      .modal header h3 { margin: 0; font-size: 18px; }
+      .modal .content { padding: 16px 18px; display: grid; gap: 14px; }
+      .field { display: grid; gap: 8px; }
+      .field label { font-size: 13px; color: var(--text-dim); }
+      .input { display: flex; align-items: center; gap: 8px; background: #191b21; border: 1px solid #232732; border-radius: 12px; padding: 10px 12px; }
+      .input input { flex: 1; background: transparent; border: 0; outline: 0; color: var(--text); font-size: 16px; }
+      .modal .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+      .btn-primary { background: linear-gradient(180deg, #ffe995, #ffd84d); color: #332a00; border: 1px solid #ffcc00; border-radius: 12px; padding: 10px 14px; font-weight: 700; cursor: pointer; }
+      .btn-ghost { background: #1b1e25; color: #c4c9d2; border: 1px solid #2a2f39; border-radius: 12px; padding: 10px 14px; font-weight: 700; cursor: pointer; }
+      .hint { font-size: 12px; color: var(--text-dim); }
+
+      /* Footer */
+      footer { color: #727a86; font-size: 12px; padding: 40px 0; }
+      .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid #222733; padding-top: 16px; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <div class="brand">
+          <div class="brand-icon" aria-hidden="true"></div>
+          <div class="brand-name">Polybee</div>
+        </div>
+        <div class="top-actions">
+          <button class="icon-btn" aria-label="通知">🔔</button>
+          <button class="icon-btn" aria-label="设置">⚙️</button>
+          <button class="pill-btn" id="connectBtn">连接钱包</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="container">
+        <h1>Predict the Future</h1>
+        <p>Bet on real-world events with BNB. Dynamic odds, instant payouts, powered by Polybee.</p>
+        <div class="filters" role="tablist" aria-label="分类筛选">
+          <button class="filter-pill active" role="tab" aria-selected="true">All</button>
+          <button class="filter-pill" role="tab" aria-selected="false">Fun</button>
+          <button class="filter-pill" role="tab" aria-selected="false">Meme</button>
+          <button class="filter-pill" role="tab" aria-selected="false">Altcoins</button>
+          <button class="filter-pill" role="tab" aria-selected="false">Sport</button>
+        </div>
+      </div>
+    </section>
+
+    <main class="container">
+      <div class="markets-header">
+        <h2>Active Markets</h2>
+        <div class="markets-sub">9 live prediction markets</div>
+      </div>
+
+      <section class="market-grid" id="marketGrid" aria-label="市场列表">
+      </section>
+    </main>
+
+    <!-- Bet Modal -->
+    <div class="modal-mask" id="betMask">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="betTitle">
+        <header>
+          <h3 id="betTitle">下注</h3>
+          <button class="icon-btn" id="betClose" aria-label="关闭">✕</button>
+        </header>
+        <div class="content">
+          <div class="field"><label>预测</label><div id="betMarketTitle" style="font-weight:700"></div></div>
+          <div class="field"><label>方向</label><div id="betSide" style="font-weight:700"></div></div>
+          <div class="field">
+            <label>金额 (BNB)</label>
+            <div class="input"><input id="betAmount" type="number" min="0" step="0.001" placeholder="例如 0.01" /></div>
+            <div class="hint">资金会直接发送到收款地址，并记录在后台与链上。</div>
+          </div>
+          <div class="actions">
+            <button class="btn-ghost" id="betCancel">取消</button>
+            <button class="btn-primary" id="betSubmit">确认下注</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="container footer-inner">
+        <div>© 2025 Polybee, Inc. All rights reserved.</div>
+        <div class="mono">0x8e79f9144...e14444</div>
+      </div>
+    </footer>
+
+    <script type="module">
+      // Firebase via CDN
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+      import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, addDoc, serverTimestamp, increment, where, getDocs, limit } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCEgDvWOldi07pRz-3na8oQ7QkJR0pzzKc",
+        authDomain: "big-pig-38efe.firebaseapp.com",
+        databaseURL: "https://big-pig-38efe-default-rtdb.firebaseio.com",
+        projectId: "big-pig-38efe",
+        storageBucket: "big-pig-38efe.firebasestorage.app",
+        messagingSenderId: "443761891665",
+        appId: "1:443761891665:web:e2246e398a6951128cdb70",
+        measurementId: "G-ZM3BEXBYPW"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      async function seedFirstMarket(){
+        const title = '奶牛的gmgn账号今天会盈利么';
+        // Look for existing market by title
+        const qx = query(collection(db, 'markets'), where('title','==', title), limit(1));
+        const snap = await getDocs(qx);
+        if (!snap.empty) return; // already exists
+        const end = new Date(); end.setHours(23,59,0,0);
+        await addDoc(collection(db, 'markets'), {
+          title,
+          category: 'Fun',
+          endAt: end,
+          volumeYes: 0,
+          volumeNo: 0,
+          totalVolume: 0,
+          numBets: 0,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
+      }
+
+      // Ensure first market exists
+      await seedFirstMarket();
+
+      // Wallet
+      const RECEIVE_ADDRESS = '0x94a2b7ef685dd0b9f5a0f2141a72c723c2b01173';
+      const BSC_CHAIN_ID = '0x38';
+      let currentAccount = null;
+      const connectBtn = document.getElementById('connectBtn');
+      connectBtn.addEventListener('click', connectWallet);
+
+      async function connectWallet() {
+        if (!window.ethereum) { alert('请安装 MetaMask'); return; }
+        try {
+          const [acc] = await window.ethereum.request({ method: 'eth_requestAccounts' });
+          currentAccount = acc;
+          await ensureBscNetwork();
+          updateConnectButton();
+        } catch (e) { console.error(e); alert('连接失败'); }
+      }
+      function updateConnectButton() {
+        if (!currentAccount) return;
+        document.getElementById('connectBtn').textContent = currentAccount.slice(0,6) + '...' + currentAccount.slice(-4);
+      }
+      async function ensureBscNetwork() {
+        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+        if (chainId === BSC_CHAIN_ID) return;
+        try {
+          await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: BSC_CHAIN_ID }] });
+        } catch (err) {
+          if (err.code === 4902 || err?.data?.originalError?.code === 4902) {
+            await window.ethereum.request({
+              method: 'wallet_addEthereumChain',
+              params: [{ chainId: BSC_CHAIN_ID, chainName: 'BNB Smart Chain', nativeCurrency: { name:'BNB', symbol:'BNB', decimals:18 }, rpcUrls:['https://bsc-dataseed.binance.org/'], blockExplorerUrls:['https://bscscan.com'] }]
+            });
+          } else { throw err; }
+        }
+      }
+
+      // Filters
+      let latestMarkets = []; let currentFilter = null;
+      document.querySelectorAll('.filter-pill').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-pill').forEach((b) => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+          btn.classList.add('active'); btn.setAttribute('aria-selected','true');
+          const tag = btn.textContent.trim();
+          currentFilter = tag === 'All' ? null : tag;
+          renderMarkets(latestMarkets);
+        });
+      });
+
+      // Markets live
+      const marketGrid = document.getElementById('marketGrid');
+      const q = query(collection(db, 'markets'), orderBy('endAt','asc'));
+      onSnapshot(q, (snap) => {
+        latestMarkets = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        renderMarkets(latestMarkets);
+      });
+
+      function formatPercent(yes, no) {
+        const total = (yes||0)+(no||0);
+        if (!total) return { yesPct: '50.0%', noPct: '50.0%' };
+        const y = (yes/total)*100; return { yesPct: y.toFixed(1)+'%', noPct: (100-y).toFixed(1)+'%' };
+      }
+      function formatVolume(yes, no) { return ((yes||0)+(no||0)).toFixed(4) + ' BNB Vol.'; }
+      function formatEnd(ts) { try{ const d = ts?.toDate? ts.toDate(): new Date(ts); return d.toLocaleString(); }catch{ return '—'; } }
+      function escapeHtml(str){ return String(str).replace(/[&<>"\']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s])); }
+
+      function renderMarkets(all){
+        let list = currentFilter ? all.filter(m => (m.category||'All')===currentFilter) : all.slice();
+        // prioritize the requested first market
+        const idx = list.findIndex(m => m.title === '奶牛的gmgn账号今天会盈利么');
+        if (idx > 0) { const m = list.splice(idx,1)[0]; list.unshift(m); }
+        marketGrid.innerHTML = '';
+        if (!list.length) { marketGrid.innerHTML = '<div class="card" aria-busy="true"><div class="card-head"><div class="thumb"></div><div class="title"><div class="skeleton-line" style="width:92%"></div><div class="skeleton-line" style="width:56%"></div></div></div><div class="actions"><div class="btn yes"><span class="badge yes">Yes</span><span class="percent">00.0%</span></div><div class="btn no"><span class="badge no">No</span><span class="percent">00.0%</span></div></div><div class="meta"><div class="cell">加载中...</div><div class="cell" style="text-align:right">请稍候</div></div></div>'; return; }
+        list.forEach((m) => {
+          const { yesPct, noPct } = formatPercent(m.volumeYes, m.volumeNo);
+          const el = document.createElement('div');
+          el.className = 'card';
+          el.innerHTML = `
+            <div class="card-head">
+              <div class="thumb">${m.imageUrl? `<img src="${m.imageUrl}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:12px"/>`:''}</div>
+              <div class="title"><div style="font-weight:700">${escapeHtml(m.title||'Untitled')}</div><div class="hint">${m.category||'All'}</div></div>
+            </div>
+            <div class="actions">
+              <button class="btn yes" data-side="YES" data-id="${m.id}"><span class="badge yes">Yes</span><span class="percent">${yesPct}</span></button>
+              <button class="btn no" data-side="NO" data-id="${m.id}"><span class="badge no">No</span><span class="percent">${noPct}</span></button>
+            </div>
+            <div class="meta">
+              <div class="cell">${formatVolume(m.volumeYes,m.volumeNo)}</div>
+              <div class="cell" style="text-align:right">Ends ${formatEnd(m.endAt)}</div>
+            </div>`;
+          marketGrid.appendChild(el);
+        });
+        marketGrid.querySelectorAll('.btn.yes, .btn.no').forEach((b)=> b.addEventListener('click', ()=> openBetModal(b.dataset.id, b.dataset.side)));
+      }
+
+      // Bet modal
+      const betMask = document.getElementById('betMask');
+      const betAmountInput = document.getElementById('betAmount');
+      const betMarketTitle = document.getElementById('betMarketTitle');
+      const betSideEl = document.getElementById('betSide');
+      const betCancel = document.getElementById('betCancel');
+      const betClose = document.getElementById('betClose');
+      const betSubmit = document.getElementById('betSubmit');
+      let activeMarket = null; let activeSide = 'YES';
+      betCancel.addEventListener('click', closeBetModal); betClose.addEventListener('click', closeBetModal);
+      betMask.addEventListener('click', (e)=>{ if(e.target===betMask) closeBetModal(); });
+      function openBetModal(id, side){ const m = latestMarkets.find(x=>x.id===id); if(!m) return; activeMarket=m; activeSide=side; betMarketTitle.textContent=m.title||''; betSideEl.textContent=side==='YES'?'Yes':'No'; betAmountInput.value=''; betMask.style.display='flex'; }
+      function closeBetModal(){ betMask.style.display='none'; }
+
+      betSubmit.addEventListener('click', async ()=>{
+        const amount = parseFloat(betAmountInput.value);
+        if(!amount || amount<=0){ alert('请输入正确金额'); return; }
+        await ensureConnected();
+        try {
+          const txHash = await sendBnb(RECEIVE_ADDRESS, amount);
+          await recordBet(activeMarket, activeSide, amount, txHash);
+          closeBetModal(); alert('下注成功');
+        } catch(e){ console.error(e); alert('下注失败'); }
+      });
+
+      async function ensureConnected(){ if(!currentAccount) await connectWallet(); if(!currentAccount) throw new Error('未连接钱包'); }
+      async function sendBnb(to, amountBnB){ const valueWei = '0x'+ BigInt(Math.floor(amountBnB*1e18)).toString(16); await ensureBscNetwork(); const txHash = await window.ethereum.request({ method:'eth_sendTransaction', params:[{ from: currentAccount, to, value: valueWei }]}); return txHash; }
+      async function recordBet(market, side, amount, txHash){ const marketRef = doc(db, 'markets', market.id); const betsCol = collection(db, 'markets', market.id, 'bets'); await addDoc(betsCol, { address: currentAccount, side, amount, txHash, chainId: 56, createdAt: serverTimestamp() }); const field = side==='YES'?'volumeYes':'volumeNo'; await updateDoc(marketRef, { [field]: increment(amount), totalVolume: increment(amount), numBets: increment(1), updatedAt: serverTimestamp() }); }
+
+      if(window.ethereum){ window.ethereum.on?.('accountsChanged', (a)=>{ currentAccount=a?.[0]||null; updateConnectButton(); }); }
+    </script>
+  </body>
+</html>
+
+
