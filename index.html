@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>预测市场 UI 模板</title>
+    <title>RoseonWorld - Prediction Market</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -74,10 +74,11 @@
         border: 1px solid rgba(255, 216, 77, 0.25);
       }
       .brand-icon {
-        width: 22px; height: 22px;
+        width: 32px; height: 32px;
         border-radius: 6px;
-        background: radial-gradient(circle at 30% 30%, #ffe27a, #ffcf36 45%, #c59300 100%);
-        box-shadow: inset 0 2px 6px rgba(0,0,0,0.35);
+        background-image: url('1.jpg');
+        background-size: cover;
+        background-position: center;
       }
       .brand-name { font-weight: 700; letter-spacing: 0.2px; color: #ffdf70; }
 
@@ -203,8 +204,9 @@
       .hint { font-size: 12px; color: var(--text-dim); }
 
       /* Footer */
-      footer { color: #727a86; font-size: 12px; padding: 40px 0; }
-      .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid #222733; padding-top: 16px; }
+      footer { position: fixed; bottom: 0; left: 0; right: 0; color: #727a86; font-size: 12px; background: var(--bg); z-index: 90; }
+      .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid #222733; padding: 16px 0; }
+      main { padding-bottom: 60px; }
       .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
     </style>
   </head>
@@ -213,12 +215,12 @@
       <div class="container topbar-inner">
         <div class="brand">
           <div class="brand-icon" aria-hidden="true"></div>
-          <div class="brand-name">Polybee</div>
+          <div class="brand-name">RoseonWorld</div>
         </div>
         <div class="top-actions">
-          <button class="icon-btn" aria-label="通知">🔔</button>
-          <button class="icon-btn" aria-label="设置">⚙️</button>
-          <button class="pill-btn" id="connectBtn">连接钱包</button>
+          <button class="icon-btn" aria-label="Notifications">🔔</button>
+          <button class="icon-btn" aria-label="Settings">⚙️</button>
+          <button class="pill-btn" id="connectBtn">Connect Wallet</button>
         </div>
       </div>
     </header>
@@ -226,8 +228,8 @@
     <section class="hero">
       <div class="container">
         <h1>Predict the Future</h1>
-        <p>Bet on real-world events with BNB. Dynamic odds, instant payouts, powered by Polybee.</p>
-        <div class="filters" role="tablist" aria-label="分类筛选">
+        <p>Bet on real-world events with BNB. Dynamic odds, instant payouts, powered by RoseonWorld.</p>
+        <div class="filters" role="tablist" aria-label="Category Filter">
           <button class="filter-pill active" role="tab" aria-selected="true">All</button>
           <button class="filter-pill" role="tab" aria-selected="false">Fun</button>
           <button class="filter-pill" role="tab" aria-selected="false">Meme</button>
@@ -240,10 +242,10 @@
     <main class="container">
       <div class="markets-header">
         <h2>Active Markets</h2>
-        <div class="markets-sub">9 live prediction markets</div>
+        <div class="markets-sub">Live prediction markets</div>
       </div>
 
-      <section class="market-grid" id="marketGrid" aria-label="市场列表">
+      <section class="market-grid" id="marketGrid" aria-label="Market List">
       </section>
     </main>
 
@@ -251,20 +253,20 @@
     <div class="modal-mask" id="betMask">
       <div class="modal" role="dialog" aria-modal="true" aria-labelledby="betTitle">
         <header>
-          <h3 id="betTitle">下注</h3>
-          <button class="icon-btn" id="betClose" aria-label="关闭">✕</button>
+          <h3 id="betTitle">Place Bet</h3>
+          <button class="icon-btn" id="betClose" aria-label="Close">✕</button>
         </header>
         <div class="content">
-          <div class="field"><label>预测</label><div id="betMarketTitle" style="font-weight:700"></div></div>
-          <div class="field"><label>方向</label><div id="betSide" style="font-weight:700"></div></div>
+          <div class="field"><label>Market</label><div id="betMarketTitle" style="font-weight:700"></div></div>
+          <div class="field"><label>Side</label><div id="betSide" style="font-weight:700"></div></div>
           <div class="field">
-            <label>金额 (BNB)</label>
-            <div class="input"><input id="betAmount" type="number" min="0" step="0.001" placeholder="例如 0.01" /></div>
-            <div class="hint">资金会直接发送到收款地址，并记录在后台与链上。</div>
+            <label>Amount (BNB)</label>
+            <div class="input"><input id="betAmount" type="number" min="0" step="0.001" placeholder="e.g. 0.01" /></div>
+            <div class="hint">Funds will be sent directly to the receiver address and recorded on-chain.</div>
           </div>
           <div class="actions">
-            <button class="btn-ghost" id="betCancel">取消</button>
-            <button class="btn-primary" id="betSubmit">确认下注</button>
+            <button class="btn-ghost" id="betCancel">Cancel</button>
+            <button class="btn-primary" id="betSubmit">Confirm Bet</button>
           </div>
         </div>
       </div>
@@ -272,7 +274,7 @@
 
     <footer>
       <div class="container footer-inner">
-        <div>© 2025 Polybee, Inc. All rights reserved.</div>
+        <div>© 2025 RoseonWorld. All rights reserved.</div>
         <div class="mono">soon</div>
       </div>
     </footer>
@@ -296,25 +298,23 @@
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
 
-      async function seedFirstMarket(){
-        const title = '奶牛的gmgn账号今天会盈利么';
-        // Look for existing market by title
+      async function seedMarket(title, category, imageUrl){
         const qx = query(collection(db, 'markets'), where('title','==', title), limit(1));
         const snap = await getDocs(qx);
         if (!snap.empty) {
           const d = snap.docs[0];
           const data = d.data();
-          if (!data.imageUrl) {
-            await updateDoc(doc(db, 'markets', d.id), { imageUrl: '1.png', updatedAt: serverTimestamp() });
+          if (imageUrl && !data.imageUrl) {
+            await updateDoc(doc(db, 'markets', d.id), { imageUrl, updatedAt: serverTimestamp() });
           }
           return;
         }
         const end = new Date(); end.setHours(23,59,0,0);
         await addDoc(collection(db, 'markets'), {
           title,
-          category: 'Fun',
+          category: category || 'All',
           endAt: end,
-          imageUrl: '1.png',
+          imageUrl: imageUrl || null,
           volumeYes: 0,
           volumeNo: 0,
           totalVolume: 0,
@@ -324,7 +324,27 @@
         });
       }
 
-      // Ensure first market exists
+      async function cleanupOldMarkets(){
+        // Remove old Chinese market titles
+        const oldTitles = ['奶牛的gmgn账号今天会盈利么', '今天王小二会出手么', 'cz的下一条推文比何一的早'];
+        for(const title of oldTitles){
+          const qx = query(collection(db, 'markets'), where('title','==', title), limit(1));
+          const snap = await getDocs(qx);
+          if(!snap.empty){
+            const docRef = doc(db, 'markets', snap.docs[0].id);
+            await updateDoc(docRef, { deleted: true, updatedAt: serverTimestamp() });
+          }
+        }
+      }
+
+      async function seedFirstMarket(){
+        await seedMarket('Will Milk Cow\'s gmgn account profit today?', 'Fun', '1.png');
+        await seedMarket('Will Wang Xiaoer make a move today?', 'Fun', '2.png');
+        await seedMarket('Will CZ\'s next tweet come before He Yi\'s?', 'Meme', '3.png');
+      }
+
+      // Cleanup old markets and ensure new ones exist
+      await cleanupOldMarkets();
       await seedFirstMarket();
 
       // EIP-1193 provider: prefer OKX wallet if present, otherwise MetaMask
@@ -342,13 +362,13 @@
       connectBtn.addEventListener('click', connectWallet);
 
       async function connectWallet() {
-        if (!ethProvider) { alert('请安装 OKX Wallet 或 MetaMask'); return; }
+        if (!ethProvider) { alert('Please install OKX Wallet or MetaMask'); return; }
         try {
           const [acc] = await ethProvider.request({ method: 'eth_requestAccounts' });
           currentAccount = acc;
           await ensureBscNetwork();
           updateConnectButton();
-        } catch (e) { console.error(e); alert('连接失败'); }
+        } catch (e) { console.error(e); alert('Connection failed'); }
       }
       function updateConnectButton() {
         if (!currentAccount) return;
@@ -385,7 +405,7 @@
       const marketGrid = document.getElementById('marketGrid');
       const q = query(collection(db, 'markets'), orderBy('endAt','asc'));
       onSnapshot(q, (snap) => {
-        latestMarkets = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        latestMarkets = snap.docs.map((d) => ({ id: d.id, ...d.data() })).filter(m => !m.deleted);
         renderMarkets(latestMarkets);
       });
 
@@ -400,11 +420,16 @@
 
       function renderMarkets(all){
         let list = currentFilter ? all.filter(m => (m.category||'All')===currentFilter) : all.slice();
-        // prioritize the requested first market
-        const idx = list.findIndex(m => m.title === '奶牛的gmgn账号今天会盈利么');
-        if (idx > 0) { const m = list.splice(idx,1)[0]; list.unshift(m); }
+        // prioritize seeded markets in order
+        const priority = ['Will Milk Cow\'s gmgn account profit today?', 'Will Wang Xiaoer make a move today?', 'Will CZ\'s next tweet come before He Yi\'s?'];
+        const sorted = [];
+        priority.forEach(t => {
+          const idx = list.findIndex(m => m.title === t);
+          if (idx >= 0) sorted.push(list.splice(idx, 1)[0]);
+        });
+        list = sorted.concat(list);
         marketGrid.innerHTML = '';
-        if (!list.length) { marketGrid.innerHTML = '<div class="card" aria-busy="true"><div class="card-head"><div class="thumb"></div><div class="title"><div class="skeleton-line" style="width:92%"></div><div class="skeleton-line" style="width:56%"></div></div></div><div class="actions"><div class="btn yes"><span class="badge yes">Yes</span><span class="percent">00.0%</span></div><div class="btn no"><span class="badge no">No</span><span class="percent">00.0%</span></div></div><div class="meta"><div class="cell">加载中...</div><div class="cell" style="text-align:right">请稍候</div></div></div>'; return; }
+        if (!list.length) { marketGrid.innerHTML = '<div class="card" aria-busy="true"><div class="card-head"><div class="thumb"></div><div class="title"><div class="skeleton-line" style="width:92%"></div><div class="skeleton-line" style="width:56%"></div></div></div><div class="actions"><div class="btn yes"><span class="badge yes">Yes</span><span class="percent">00.0%</span></div><div class="btn no"><span class="badge no">No</span><span class="percent">00.0%</span></div></div><div class="meta"><div class="cell">Loading...</div><div class="cell" style="text-align:right">Please wait</div></div></div>'; return; }
         list.forEach((m) => {
           const { yesPct, noPct } = formatPercent(m.volumeYes, m.volumeNo);
           const el = document.createElement('div');
@@ -443,16 +468,16 @@
 
       betSubmit.addEventListener('click', async ()=>{
         const amount = parseFloat(betAmountInput.value);
-        if(!amount || amount<=0){ alert('请输入正确金额'); return; }
+        if(!amount || amount<=0){ alert('Please enter a valid amount'); return; }
         await ensureConnected();
         try {
           const txHash = await sendBnb(RECEIVE_ADDRESS, amount);
           await recordBet(activeMarket, activeSide, amount, txHash);
-          closeBetModal(); alert('下注成功');
-        } catch(e){ console.error(e); alert('下注失败'); }
+          closeBetModal(); alert('Bet placed successfully');
+        } catch(e){ console.error(e); alert('Bet failed'); }
       });
 
-      async function ensureConnected(){ if(!currentAccount) await connectWallet(); if(!currentAccount) throw new Error('未连接钱包'); }
+      async function ensureConnected(){ if(!currentAccount) await connectWallet(); if(!currentAccount) throw new Error('Wallet not connected'); }
       async function sendBnb(to, amountBnB){ const valueWei = '0x'+ BigInt(Math.floor(amountBnB*1e18)).toString(16); await ensureBscNetwork(); const txHash = await ethProvider.request({ method:'eth_sendTransaction', params:[{ from: currentAccount, to, value: valueWei }]}); return txHash; }
       async function recordBet(market, side, amount, txHash){ const marketRef = doc(db, 'markets', market.id); const betsCol = collection(db, 'markets', market.id, 'bets'); await addDoc(betsCol, { address: currentAccount, side, amount, txHash, chainId: 56, createdAt: serverTimestamp() }); const field = side==='YES'?'volumeYes':'volumeNo'; await updateDoc(marketRef, { [field]: increment(amount), totalVolume: increment(amount), numBets: increment(1), updatedAt: serverTimestamp() }); }
 
