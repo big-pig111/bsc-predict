@@ -319,6 +319,13 @@
       // Ensure first market exists
       await seedFirstMarket();
 
+      // EIP-1193 provider: prefer OKX wallet if present, otherwise MetaMask
+      const ethProvider = (window.okxwallet && typeof window.okxwallet.request === 'function')
+        ? window.okxwallet
+        : (window.ethereum && typeof window.ethereum.request === 'function')
+          ? window.ethereum
+          : null;
+
       // Wallet
       const RECEIVE_ADDRESS = '0x94a2b7ef685dd0b9f5a0f2141a72c723c2b01173';
       const BSC_CHAIN_ID = '0x38';
@@ -327,9 +334,9 @@
       connectBtn.addEventListener('click', connectWallet);
 
       async function connectWallet() {
-        if (!window.ethereum) { alert('请安装 MetaMask'); return; }
+        if (!ethProvider) { alert('请安装 OKX Wallet 或 MetaMask'); return; }
         try {
-          const [acc] = await window.ethereum.request({ method: 'eth_requestAccounts' });
+          const [acc] = await ethProvider.request({ method: 'eth_requestAccounts' });
           currentAccount = acc;
           await ensureBscNetwork();
           updateConnectButton();
@@ -340,13 +347,13 @@
         document.getElementById('connectBtn').textContent = currentAccount.slice(0,6) + '...' + currentAccount.slice(-4);
       }
       async function ensureBscNetwork() {
-        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+        const chainId = await ethProvider.request({ method: 'eth_chainId' });
         if (chainId === BSC_CHAIN_ID) return;
         try {
-          await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: BSC_CHAIN_ID }] });
+          await ethProvider.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: BSC_CHAIN_ID }] });
         } catch (err) {
           if (err.code === 4902 || err?.data?.originalError?.code === 4902) {
-            await window.ethereum.request({
+            await ethProvider.request({
               method: 'wallet_addEthereumChain',
               params: [{ chainId: BSC_CHAIN_ID, chainName: 'BNB Smart Chain', nativeCurrency: { name:'BNB', symbol:'BNB', decimals:18 }, rpcUrls:['https://bsc-dataseed.binance.org/'], blockExplorerUrls:['https://bscscan.com'] }]
             });
@@ -438,10 +445,10 @@
       });
 
       async function ensureConnected(){ if(!currentAccount) await connectWallet(); if(!currentAccount) throw new Error('未连接钱包'); }
-      async function sendBnb(to, amountBnB){ const valueWei = '0x'+ BigInt(Math.floor(amountBnB*1e18)).toString(16); await ensureBscNetwork(); const txHash = await window.ethereum.request({ method:'eth_sendTransaction', params:[{ from: currentAccount, to, value: valueWei }]}); return txHash; }
+      async function sendBnb(to, amountBnB){ const valueWei = '0x'+ BigInt(Math.floor(amountBnB*1e18)).toString(16); await ensureBscNetwork(); const txHash = await ethProvider.request({ method:'eth_sendTransaction', params:[{ from: currentAccount, to, value: valueWei }]}); return txHash; }
       async function recordBet(market, side, amount, txHash){ const marketRef = doc(db, 'markets', market.id); const betsCol = collection(db, 'markets', market.id, 'bets'); await addDoc(betsCol, { address: currentAccount, side, amount, txHash, chainId: 56, createdAt: serverTimestamp() }); const field = side==='YES'?'volumeYes':'volumeNo'; await updateDoc(marketRef, { [field]: increment(amount), totalVolume: increment(amount), numBets: increment(1), updatedAt: serverTimestamp() }); }
 
-      if(window.ethereum){ window.ethereum.on?.('accountsChanged', (a)=>{ currentAccount=a?.[0]||null; updateConnectButton(); }); }
+      if(ethProvider && ethProvider.on){ ethProvider.on('accountsChanged', (a)=>{ currentAccount=a?.[0]||null; updateConnectButton(); }); }
     </script>
   </body>
 </html>
